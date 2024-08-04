@@ -19,7 +19,6 @@ public class Campo {
     public Campo(int linha, int coluna) {
         this.linha = linha;
         this.coluna = coluna;
-
     }
 
     public boolean adicionarVizinho(Campo vizinho) {
@@ -29,39 +28,41 @@ public class Campo {
 
         int deltaLinha = Math.abs(linha - vizinho.linha);
         int deltaColuna = Math.abs(coluna - vizinho.coluna);
-        int deltaGeral = deltaColuna + deltaLinha;
+        int detalGeral = deltaColuna + deltaLinha;
 
-        if (deltaGeral == 1 && !diagonal) {
+        if(detalGeral == 1 && !diagonal) {
             vizinhos.add(vizinho);
             return true;
-        } else if (deltaGeral == 2 && diagonal) {
+        } else if(detalGeral == 2 && diagonal) {
             vizinhos.add(vizinho);
             return true;
         } else {
             return false;
         }
-
     }
 
     public void alternarMarcacao() {
-        if (!aberto) {
+        if(!aberto) {
             marcado = !marcado;
         }
     }
 
     public boolean abrir() {
-        if (!aberto && !marcado) {
+
+        if(!aberto && !marcado) {
             aberto = true;
-            if (minado) {
+
+            if(minado) {
                 throw new ExplosaoException();
             }
-            if (vizinhancaSegura()) {
+
+            if(vizinhancaSegura()) {
                 vizinhos.forEach(v -> v.abrir());
             }
+
             return true;
         } else {
             return false;
-
         }
     }
 
@@ -74,11 +75,15 @@ public class Campo {
     }
 
     public boolean isMinado() {
-        return true;
+        return minado;
     }
 
     public boolean isMarcado() {
         return marcado;
+    }
+
+    void setAberto(boolean aberto) {
+        this.aberto = aberto;
     }
 
     public boolean isAberto() {
@@ -101,7 +106,6 @@ public class Campo {
         boolean desvendado = !minado && aberto;
         boolean protegido = minado && marcado;
         return desvendado || protegido;
-
     }
 
     long minasNaVizinhanca() {
@@ -115,18 +119,16 @@ public class Campo {
     }
 
     public String toString() {
-        if (marcado) {
+        if(marcado) {
             return "x";
-        } else if (aberto && minado) {
+        } else if(aberto && minado) {
             return "*";
-        } else if (aberto && minasNaVizinhanca() > 0) {
+        } else if(aberto && minasNaVizinhanca() > 0) {
             return Long.toString(minasNaVizinhanca());
-        } else if (aberto) {
+        } else if(aberto) {
             return " ";
         } else {
             return "?";
         }
-
     }
-
 }
